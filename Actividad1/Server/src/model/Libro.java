@@ -88,6 +88,16 @@ public class Libro {
 
     }
 
+    public static void agregarLibro(Libro libro) {
+
+        synchronized (Libro.class) {
+
+            libros.add(libro);
+
+        }
+
+    }
+
     public String toString() {
 
         return "ISBN: " + isbn + ", Título: " + titulo + ", Autor: " + autor + ", Precio: " + precio;
