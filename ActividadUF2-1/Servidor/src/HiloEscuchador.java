@@ -12,17 +12,18 @@ public class HiloEscuchador implements Runnable {
     //Variable del TreeMap
     private TreeMap<String, Producto> productos;
 
-    //En la clase ponemos el TreeMap para acceder a el
+    //Constructor que recibe el socket del cliente y la referencia al TreeMap de productos
     public HiloEscuchador(Socket cliente, TreeMap<String, Producto> productos) {
 
         numCliente++;
 
+        // Creamos un hilo con un nombre único basado en el número de cliente
         hilo = new Thread(this, "Cliente" + numCliente);
 
-        this.enchufeAlCliente = cliente;
-        this.productos = productos;
+        this.enchufeAlCliente = cliente; //Asociamos el socket del cliente
+        this.productos = productos; //Asociamos el TreeMap de productos
 
-        hilo.start();
+        hilo.start();//Iniciamos el hilo
 
     }
 
@@ -33,8 +34,8 @@ public class HiloEscuchador implements Runnable {
 
         try {
 
-            InputStream entrada = enchufeAlCliente.getInputStream();
-            OutputStream salida = enchufeAlCliente.getOutputStream();
+            InputStream entrada = enchufeAlCliente.getInputStream(); // Para leer datos enviados por el cliente
+            OutputStream salida = enchufeAlCliente.getOutputStream(); // Para enviar datos al cliente
             String texto = "";
 
             while (!texto.trim().equals("FIN")) {

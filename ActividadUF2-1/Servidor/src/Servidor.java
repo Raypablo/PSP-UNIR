@@ -8,20 +8,23 @@ public class Servidor {
 
     public static void main(String[] args) {
 
+        // Mensaje inicial en la consola Servidor para informar que esta arrancando
         System.out.println("APLICACIÓN DE SERVIDOR MULTITAREA");
         System.out.println("----------------------------------");
 
         try {
 
             ServerSocket servidor = new ServerSocket();
-            InetSocketAddress direccion = new InetSocketAddress("127.0.0.1",2000);
-            servidor.bind(direccion);
+            InetSocketAddress direccion = new InetSocketAddress("127.0.0.1",2000); //Configuramos la dirección IP y puerto donde escuchará el servidor
+            servidor.bind(direccion); //Asocia el ServerSocket con esta dirección y puerto
 
             System.out.println("Servidor listo para aceptar solicitudes");
             System.out.println("Dirección IP: " + direccion.getAddress());
 
+            // Creamos un TreeMap para almacenar los productos.
             TreeMap<String, Producto> productos = new TreeMap<String, Producto>();
 
+            // Inicializar el TreeMap con productos predefinidos
             productos.put("PL",new Producto("Peras limoneras", 14, 5f));
             productos.put("PC",new Producto("Peras conferencia", 12, 7f));
             productos.put("PN",new Producto("Plátano canario", 5, 2.5f));
@@ -38,15 +41,17 @@ public class Servidor {
 
             while (true) {
 
-                Socket enchufeAlCliente = servidor.accept();
+                Socket enchufeAlCliente = servidor.accept(); // Esperar una conexión entrante de un cliente
                 System.out.println("Comunicación entrante");
-                // Accedemos al TreeMap en cada hilo
+
+                //Crear un nuevo hilo para manejar esta conexión y pasamos los productos para que el hilo pueda interactuar con ellos
                 new HiloEscuchador(enchufeAlCliente, productos);
 
             }
 
         } catch (IOException e) {
 
+            // Captura y muestra errores relacionados con la entrada/salida
             System.out.println(e.getMessage());
 
         }

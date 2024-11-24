@@ -7,12 +7,16 @@ import java.util.Scanner;
 public class Cliente {
 
     public static void main(String[] args) {
+
+        // Mostramos los mensajes iniciales para informar que la aplicación cliente se está ejecutando
         System.out.println("APLICACIÓN DE CLIENTE");
         System.out.println("----------------------------------");
 
         Scanner scanner = new Scanner(System.in);
 
         try {
+
+            // Creamos un socket para conectarnos al servidor en localhost (127.0.0.1) y puerto 8080
             Socket socket = new Socket("localhost", 8080);
 
             // Obtener flujos de entrada y salida
@@ -20,12 +24,14 @@ public class Cliente {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader entrada = new BufferedReader(inputStreamReader);
 
+            // Configuración de flujos de salida (para enviar al servidor)
             OutputStream outputStream = socket.getOutputStream();
             PrintWriter salida = new PrintWriter(outputStream, true);
 
             boolean salir = false;
 
             while (!salir) {
+
                 // Mostrar menú al usuario
                 System.out.println("Seleccione una opción:");
                 System.out.println("1. Consultar libro por ISBN");
@@ -38,6 +44,7 @@ public class Cliente {
 
                 switch (opcion) {
                     case "1" -> {
+
                         // Consultar libro por ISBN
                         System.out.print("Introduce el ISBN del libro: ");
                         String isbn = scanner.nextLine();
@@ -49,8 +56,10 @@ public class Cliente {
                         // Leer respuesta del servidor
                         String respuesta = entrada.readLine();
                         System.out.println("Respuesta del servidor: " + respuesta);
+
                     }
                     case "2" -> {
+
                         // Consultar libro por título
                         System.out.print("Introduce el título del libro: ");
                         String titulo = scanner.nextLine();
@@ -62,8 +71,10 @@ public class Cliente {
                         // Leer respuesta del servidor
                         String respuesta = entrada.readLine();
                         System.out.println("Respuesta del servidor: " + respuesta);
+
                     }
                     case "3" -> {
+
                         // Consultar libros por autor
                         System.out.print("Introduce el autor: ");
                         String autor = scanner.nextLine();
@@ -76,8 +87,10 @@ public class Cliente {
                         String respuesta = entrada.readLine();
                         System.out.println("Respuesta del servidor: ");
                         System.out.println(respuesta);
+
                     }
                     case "4" -> {
+
                         // Agregar libro
                         System.out.print("Introduce el ISBN del nuevo libro: ");
                         String isbn = scanner.nextLine();
@@ -100,27 +113,35 @@ public class Cliente {
                         // Leer respuesta del servidor
                         String respuesta = entrada.readLine();
                         System.out.println("Respuesta del servidor: " + respuesta);
+
                     }
                     case "5" -> {
+
                         // Salir
                         salida.println("salir");
                         salir = true;
                         String respuesta = entrada.readLine();
                         System.out.println("Respuesta del servidor: " + respuesta);
+
                     }
                     default -> {
+
                         System.out.println("Opción no válida. Por favor, elige una opción del menú.");
+
                     }
                 }
             }
 
-            // Cerrar recursos
+            // Cerramos los recursos de flujo de entrada, salida y la conexion con el servidor
             entrada.close();
             salida.close();
             socket.close();
 
         } catch (IOException e) {
+
+            // Manejar errores de entrada/salida
             System.out.println("Error en el cliente: " + e.getMessage());
+
         }
 
     }

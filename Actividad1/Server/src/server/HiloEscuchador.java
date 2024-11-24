@@ -5,25 +5,27 @@ import java.io.*;
 import java.net.Socket;
 
 public class HiloEscuchador implements Runnable {
-    private Socket socketCliente;
+    private Socket socketCliente; //Socket para la conexión con un cliente
 
+    //Constructor que inicializa el socket del cliente
     public HiloEscuchador(Socket socket) {
         this.socketCliente = socket;
     }
 
+    //Metodo principal del hilo que se ejecuta al iniciar este hilo
     @Override
     public void run() {
         try {
 
             System.out.println("Cliente conectado: " + socketCliente.getInetAddress());
 
-            // Obtener los flujos de entrada y salida
-            InputStream inputStream = socketCliente.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader entrada = new BufferedReader(inputStreamReader);
+            //Obtener los flujos de entrada y salida
+            InputStream inputStream = socketCliente.getInputStream(); //Obtiene el flujo de entrada del socket
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream); //Convierte a flujo de caracteres
+            BufferedReader entrada = new BufferedReader(inputStreamReader); //Permite leer texto linea por linea
 
-            OutputStream outputStream = socketCliente.getOutputStream();
-            PrintWriter salida = new PrintWriter(outputStream, true);
+            OutputStream outputStream = socketCliente.getOutputStream(); //Obtiene el flujo de salida del socket
+            PrintWriter salida = new PrintWriter(outputStream, true); //Permite enviar texto al cliente
 
             boolean salir = false;
 
@@ -73,7 +75,7 @@ public class HiloEscuchador implements Runnable {
                                 double precio = Double.parseDouble(precioStr);
                                 Libro nuevoLibro = new Libro(isbn, titulo, autor, precio);
 
-                                // Agregar el libro de manera segura
+                                //Agrega el libro de manera sincronizada para evitar conflictos
                                 synchronized (Libro.class) {
 
                                     Libro.agregarLibro(nuevoLibro);
@@ -116,6 +118,7 @@ public class HiloEscuchador implements Runnable {
 
         } catch (IOException e) {
 
+            // Maneja errores de entrada/salida
             System.out.println("Error al manejar cliente: " + e.getMessage());
 
         } finally {

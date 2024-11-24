@@ -10,9 +10,10 @@ public class Servidor {
 
     public static void main(String[] args) {
 
-        // Inicializar libros
+        //Inicializar libros
         Libro.inicializarLibros();
 
+        //Mostramos mensajes informativos en la consola de Servidor
         System.out.println("APLICACIÓN DE SERVIDOR");
         System.out.println("----------------------------------");
 
@@ -20,7 +21,7 @@ public class Servidor {
 
         try {
 
-            // Intentar crear el ServerSocket
+            //Creamo el ServerSocket en el puerto 8080
             serverSocket = new ServerSocket(8080);
             System.out.println("Servidor escuchando en el puerto 8080...");
 
@@ -42,12 +43,14 @@ public class Servidor {
                 System.out.println("Cliente conectado.");
 
                 // Crear un nuevo hilo para manejar el cliente
-                HiloEscuchador hilo = new HiloEscuchador(clientSocket);
-                Thread thread = new Thread(hilo);
-                thread.start();
+                HiloEscuchador hilo = new HiloEscuchador(clientSocket); //Creamos la instancia hilo
+                Thread thread = new Thread(hilo); //Asignamos la instancia a un hilo
+                thread.start(); //Iniciamos el hilo
 
             } catch (IOException e) {
+
                 System.out.println("Error al aceptar conexión de cliente: " + e.getMessage());
+
             }
 
         }
